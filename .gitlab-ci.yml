@@ -1,5 +1,6 @@
 stages:
   - "build"
+  - "deploy-backend"
 
 build-backend:
   stage: "build"
@@ -17,3 +18,16 @@ build-backend:
       --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:latest"
+
+deploy-to-kubernetes:
+  stage: deploy
+  image:
+    name: 'gitlab.eps-dev.de:5050/devops/deployment-containers/helmctl:latest'
+    entrypoint: [""]
+  needs:
+    - build-backend
+  script:
+    - helm uninstall url-backend --namespace url-shortener || true
+    - helm install url-backend ./deployment/ --values ./deployment/values.yaml --namespace url-shortener
+  only:
+    - main
