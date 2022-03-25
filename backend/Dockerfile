@@ -2,7 +2,7 @@ FROM node:14-alpine
 
 WORKDIR /app
 
-COPY ./ /app
+COPY ./backend /app
 
 RUN ls /app
 

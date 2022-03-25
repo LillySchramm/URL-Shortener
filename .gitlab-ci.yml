@@ -7,12 +7,12 @@ build-backend:
     name: 'gcr.io/kaniko-project/executor:debug'
     entrypoint: [""]
   script:
-    - echo "DATABASE_URL=\"${PWD}\"" > .env
-    - echo "BASE_URL='https://eps-dev.net'" >> .env
+    - echo "DATABASE_URL=\"${PWD}\"" > backend/.env
+    - echo "BASE_URL='https://eps-dev.net'" >> backend/.env
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"registry01.eps-dev.de\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - >-
-      cd backend && /kaniko/executor
+      /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
