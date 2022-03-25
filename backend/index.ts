@@ -4,10 +4,18 @@ import { log, splashscreen } from './tools/log';
 import { addUrl, getUrl } from './tools/database';
 import { isHttpsUri } from 'valid-url';
 import { env } from 'process';
+import rateLimit from 'express-rate-limit';
 
 const BASE_URL = env.BASE_URL;
 const app = express();
 app.use(express.json());
+
+const addLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 50,
+	standardHeaders: true,
+	legacyHeaders: false,
+});
 
 app.get('/:id', async (req, res, next) => {
     const id: string = req.params.id;
@@ -23,7 +31,7 @@ app.get('/:id', async (req, res, next) => {
     res.redirect(url);
 });
 
-app.post('/add', async (req, res, next) => {
+app.post('/add', addLimiter, async (req, res, next) => {
     const { url } = req.body;
 
     if (!url || url.length > 2048 || !isHttpsUri(url)) {
@@ -42,5 +50,5 @@ app.post('/add', async (req, res, next) => {
 const server = app.listen(3000, async () => {
     splashscreen();
 
-    log(`🚀 Server ready at: http://localhost:3000`);
+    log(`🚀 Server ready at: ${BASE_URL}`);
 });
