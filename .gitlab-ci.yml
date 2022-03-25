@@ -12,7 +12,7 @@ build-backend:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"registry01.eps-dev.de\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - >-
-      /kaniko/executor
+      cd backend && /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
