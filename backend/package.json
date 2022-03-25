@@ -1,0 +1,27 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "dependencies": {
+        "dotenv": "^16.0.0",
+        "express": "^4.17.2",
+        "moment": "^2.29.1",
+        "mongodb": "^4.4.1",
+        "ts-node": "^10.5.0",
+        "typescript": "^4.5.5"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.13",
+        "@types/node": "^17.0.17"
+    },
+    "scripts": {
+        "build": "tsc --removeComments",
+        "prestart": "npm run build",
+        "start": "node .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Elias Schramm",
+    "license": "gpl-3.0"
+}
