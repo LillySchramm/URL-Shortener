@@ -23,6 +23,5 @@ export function log(message: any): void {
 }
 
 export function splashscreen(): void {
-    log(env.DATABASE_URL);
     for(const line of CLI_LOGO.split('\n')) log(line);
 }
