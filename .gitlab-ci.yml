@@ -22,7 +22,7 @@ build-backend:
 deploy-backend:
   stage: deploy
   image:
-    name: 'gitlab.eps-dev.de:5050/devops/deployment-containers/helmctl:latest'
+    name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
     entrypoint: [""]
   needs:
     - build-backend
