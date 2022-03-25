@@ -1,6 +1,6 @@
 stages:
   - "build"
-  - "deploy-backend"
+  - "deploy"
 
 build-backend:
   stage: "build"
@@ -19,7 +19,7 @@ build-backend:
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:latest"
 
-deploy-to-kubernetes:
+deploy-backend:
   stage: deploy
   image:
     name: 'gitlab.eps-dev.de:5050/devops/deployment-containers/helmctl:latest'
