@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY ./ /app
 
+RUN ls /app
+
 RUN npm i
 
 RUN npm run build
