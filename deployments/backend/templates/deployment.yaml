@@ -39,11 +39,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /stats
+              path: /mLDlkb
               port: http
           readinessProbe:
             httpGet:
-              path: /stats
+              path: /mLDlkb
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
