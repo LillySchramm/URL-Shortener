@@ -28,6 +28,6 @@ deploy-backend:
     - build-backend
   script:
     - helm uninstall url-backend --namespace url-shortener || true
-    - helm install url-backend ./deployment/ --values ./deployment/values.yaml --namespace url-shortener
+    - helm install url-backend ./deployments/backend --values ./deployments/backend/values.yaml --namespace url-shortener
   only:
     - main
