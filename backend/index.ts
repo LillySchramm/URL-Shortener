@@ -47,7 +47,7 @@ app.post('/add', addLimiter, async (req, res, next) => {
     res.json({ "url": `${BASE_URL}/${id}` });
 });
 
-const server = app.listen(3000, async () => {
+const server = app.listen(80, async () => {
     splashscreen();
 
     log(`🚀 Server ready at: ${BASE_URL}`);
