@@ -17,7 +17,7 @@ export async function getUrl(id: string): Promise<string | undefined> {
 
     const collections = await client.db('eps-url').listCollections().toArray();
 
-    if (!collections.find((_collection) => _collection.name === "redirects")) {
+    if (!collections.find((_collection) => _collection.name === 'redirects')) {
         return undefined;
     }
 
@@ -46,12 +46,12 @@ export async function addUrl(url: string): Promise<string> {
 
     if (!await collection.indexExists('id_index')) {
         log('Looks like id_index has not been created yet. Creating.');
-        await collection.createIndex('id', { name: "id_index" });
+        await collection.createIndex('id', { name: 'id_index' });
     }
 
     if (!await collection.indexExists('url_index')) {
         log('Looks like url_index has not been created yet. Creating.');
-        await collection.createIndex('url', { name: "url_index" });
+        await collection.createIndex('url', { name: 'url_index' });
     }
     return id;
 }
