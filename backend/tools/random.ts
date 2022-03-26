@@ -1,4 +1,4 @@
-import { env } from "process";
+import { env } from 'process';
 
 const CHAR_POOL = env.CHAR_POOL || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const ID_SIZE = env.ID_SIZE || 6;

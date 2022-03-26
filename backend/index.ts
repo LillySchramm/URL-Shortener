@@ -34,7 +34,7 @@ app.get('/:id', async (req, res, next) => {
 
     if (!url) {
         res.status(400);
-        res.json({ "error": "ID does not exist." });
+        res.json({ 'error': 'ID does not exist.' });
 
         return;
     }
@@ -47,7 +47,7 @@ app.post('/add', addLimiter, async (req, res, next) => {
 
     if (!url || url.length > 2048 || !isHttpsUri(url)) {
         res.status(400);
-        res.json({ "error": "URL not valid." });
+        res.json({ 'error': 'URL not valid.' });
 
         return;
     }
@@ -55,7 +55,7 @@ app.post('/add', addLimiter, async (req, res, next) => {
 
     const id = await addUrl(url);
 
-    res.json({ "url": `${BASE_URL}/${id}` });
+    res.json({ 'url': `${BASE_URL}/${id}` });
 });
 
 const server = app.listen(80, async () => {
