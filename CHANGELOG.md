@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0 - 26.03.2022
+
+### Added
+
+- Added the `/stats` endpoint which displays some basic information.
+
 ## 0.0.3 - 26.03.2022
 
 ### Changed
