@@ -4,6 +4,7 @@ import { log } from './log';
 import { getRandomString } from './random';
 
 const DATABASE_URL: string = env.DATABASE_URL || '';
+const FORBIDDEN_SHORTS: string[] = ['stats'];
 
 const client = new MongoClient(DATABASE_URL);
 
@@ -39,7 +40,7 @@ export async function addUrl(url: string): Promise<string> {
     let id = '';
     do {
         id = getRandomString();
-    } while(await collection.findOne({ id }));
+    } while(FORBIDDEN_SHORTS.includes(id) || await collection.findOne({ id }));
 
     collection.insertOne({id, url});
 
@@ -53,4 +54,12 @@ export async function addUrl(url: string): Promise<string> {
         await collection.createIndex('url', { name: "url_index" });
     }
     return id;
+}
+
+export async function getRedirectCount(): Promise<number> {
+    await client.connect();
+
+    const collection = client.db('eps-url').collection('redirects');
+
+    return collection.estimatedDocumentCount();
 }

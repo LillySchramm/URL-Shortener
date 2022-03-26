@@ -1,10 +1,11 @@
 import express from 'express';
 import 'dotenv/config';
 import { log, splashscreen } from './tools/log';
-import { addUrl, getUrl } from './tools/database';
+import { addUrl, getRedirectCount, getUrl } from './tools/database';
 import { isHttpsUri } from 'valid-url';
 import { env } from 'process';
 import rateLimit from 'express-rate-limit';
+import { VERSION, VERSION_DATE } from './version';
 
 const BASE_URL = env.BASE_URL;
 const app = express();
@@ -15,6 +16,16 @@ const addLimiter = rateLimit({
 	max: 30,
 	standardHeaders: true,
 	legacyHeaders: false,
+});
+
+app.get('/stats', async (req, res, next) => {
+    const currentRedirectCount = await getRedirectCount();
+
+    res.json({
+        version: VERSION,
+        releaseDate: VERSION_DATE,
+        currentRedirectCount,
+    });
 });
 
 app.get('/:id', async (req, res, next) => {
