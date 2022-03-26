@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { env } from 'process';
+import { VERSION, VERSION_DATE } from '../version';
 const LOG_PREFIX = 'EPS-URL';
 
 const CLI_LOGO =
@@ -13,7 +13,7 @@ const CLI_LOGO =
 |_____|_|   |____/           \\___/|_| \\_\\_____|
 
 
-VERSION: 0.0.3                       26.03.2022
+VERSION: ${VERSION}                       ${VERSION_DATE}
 
 ###############################################
 `;
