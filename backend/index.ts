@@ -6,9 +6,12 @@ import { isHttpsUri } from 'valid-url';
 import { env } from 'process';
 import rateLimit from 'express-rate-limit';
 import { VERSION, VERSION_DATE } from './version';
+import cors from 'cors';
 
 const BASE_URL = env.BASE_URL;
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 const addLimiter = rateLimit({
