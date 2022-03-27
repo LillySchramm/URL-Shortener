@@ -47,3 +47,16 @@ deploy-backend:
     - helm install url-backend ./deployments/backend --values ./deployments/backend/values.yaml --namespace url-shortener
   only:
     - main
+
+deploy-frontend:
+  stage: deploy
+  image:
+    name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
+    entrypoint: [""]
+  needs:
+    - build-frontend
+  script:
+    - helm uninstall url-frontend --namespace url-shortener || true
+    - helm install url-frontend ./deployments/frontend --values ./deployments/frontend/values.yaml --namespace url-shortener
+  only:
+    - main
