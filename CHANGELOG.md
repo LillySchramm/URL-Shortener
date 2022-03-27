@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 - 27.03.2022
+
+### Added
+
+- Added an element to the frontend which displays the current version.
+
 ## 0.2.0 - 27.03.2022
 
 ### Added
