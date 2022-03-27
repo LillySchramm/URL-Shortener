@@ -11,7 +11,7 @@ build-backend:
     - npm i
     - npm install -g esbuild
     - npm run build
-    - esbuild .\dist\index.js --bundle --outfile=bundle.js --platform=node
+    - esbuild ./dist/index.js --bundle --outfile=bundle.js --platform=node
 
 build-frontend:
   image: node:14-alpine
