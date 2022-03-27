@@ -74,7 +74,7 @@ deploy-backend:
     name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
     entrypoint: [""]
   needs:
-    - build-backend
+    - build-backend-container
   script:
     - helm uninstall url-backend --namespace url-shortener || true
     - helm install url-backend ./deployments/backend --values ./deployments/backend/values.yaml --namespace url-shortener
@@ -87,7 +87,7 @@ deploy-frontend:
     name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
     entrypoint: [""]
   needs:
-    - build-frontend
+    - build-frontend-container
   script:
     - helm uninstall url-frontend --namespace url-shortener || true
     - helm install url-frontend ./deployments/frontend --values ./deployments/frontend/values.yaml --namespace url-shortener
