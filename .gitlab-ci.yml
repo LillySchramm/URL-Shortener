@@ -21,6 +21,11 @@ build-backend:
 build-frontend:
   image: node:14-alpine
   stage: "build"
+  artifacts:
+    untracked: false
+    paths:
+      - frontend/build
+    expire_in: 1 days
   script:
     - cd frontend/
     - npm i
