@@ -6,6 +6,11 @@ stages:
 build-backend:
   image: node:14-alpine
   stage: "build"
+  artifacts:
+    untracked: false
+    paths:
+      - backend/bundle.js
+    expire_in: 1 days
   script:
     - cd backend/
     - npm i
