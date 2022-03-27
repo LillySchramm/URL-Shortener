@@ -1,16 +1,9 @@
-FROM node:14-alpine
+FROM httpd
 
-WORKDIR /app
+COPY frontend/build/ /usr/local/apache2/htdocs/
+COPY frontend/.htaccess /usr/local/apache2/htdocs/
 
-COPY ./frontend /app
-
-RUN npm i
-
-RUN npm run build
-
-RUN npm install -g serve
+RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
+    sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /usr/local/apache2/conf/httpd.conf
 
 EXPOSE 80
-
-ENTRYPOINT [ "serve", "-s", "build", "-p", "80" ]
-
