@@ -9,6 +9,7 @@ import { VERSION, VERSION_DATE } from './version';
 import cors from 'cors';
 
 const BASE_URL = env.BASE_URL;
+const FRONTEND_URL = env.FRONTEND_URL || 'https://eps-dev.de';
 const app = express();
 
 app.use(cors());
@@ -19,6 +20,10 @@ const addLimiter = rateLimit({
 	max: 30,
 	standardHeaders: true,
 	legacyHeaders: false,
+});
+
+app.get('/', async (req, res, next) => {
+    res.redirect(FRONTEND_URL);
 });
 
 app.get('/stats', async (req, res, next) => {
