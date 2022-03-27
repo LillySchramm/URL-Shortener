@@ -5,6 +5,7 @@ stages:
 
 build-backend:
   image: node:14-alpine
+  stage: "build"
   script:
     - cd backend/
     - npm i
@@ -12,6 +13,7 @@ build-backend:
 
 build-frontend:
   image: node:14-alpine
+  stage: "build"
   script:
     - cd frontend/
     - npm i
