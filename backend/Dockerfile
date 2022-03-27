@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ./backend /app
 
-RUN ls /app
+RUN ls -a /app
 
 EXPOSE 80
 
