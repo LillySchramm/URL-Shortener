@@ -10,6 +10,7 @@ build-backend:
   script:
     - echo "DATABASE_URL=\"${DATABASE_URL}\"" > backend/.env
     - echo "BASE_URL='https://eps-dev.net'" >> backend/.env
+    - echo "FRONTEND_URL='https://s.eps-dev.net'" >> backend/.env
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"registry01.eps-dev.de\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - >-
@@ -18,6 +19,21 @@ build-backend:
       --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
       --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:latest"
+
+build-frontend:
+  stage: "build"
+  image:
+    name: 'gcr.io/kaniko-project/executor:debug'
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"registry01.eps-dev.de\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/frontend/Dockerfile"
+      --destination "registry01.eps-dev.de/gitlab/shortener/frontend-${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
+      --destination "registry01.eps-dev.de/gitlab/shortener/frontend-${CI_COMMIT_REF_SLUG}:latest"
 
 deploy-backend:
   stage: deploy
@@ -29,5 +45,18 @@ deploy-backend:
   script:
     - helm uninstall url-backend --namespace url-shortener || true
     - helm install url-backend ./deployments/backend --values ./deployments/backend/values.yaml --namespace url-shortener
+  only:
+    - main
+
+deploy-frontend:
+  stage: deploy
+  image:
+    name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
+    entrypoint: [""]
+  needs:
+    - build-frontend
+  script:
+    - helm uninstall url-frontend --namespace url-shortener || true
+    - helm install url-frontend ./deployments/frontend --values ./deployments/frontend/values.yaml --namespace url-shortener
   only:
     - main

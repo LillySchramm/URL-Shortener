@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.1.1 - 26.03.2022
+## 0.2.0 - 27.03.2022
+
+### Added
+
+- Added a basic React frontend.
+- Added the option to set the `FRONTEND_URL` environment variable. Redirects the requester to set URL when requesting the root.
+
+## 0.1.1 - 27.03.2022
 
 ### Added
 
