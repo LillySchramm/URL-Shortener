@@ -5,7 +5,7 @@
 replicaCount: 2
 
 image:
-  repository: registry01.eps-dev.de/gitlab/shortener/main
+  repository: registry.cdev.nexus/url-shortener/backend
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
