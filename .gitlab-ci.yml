@@ -4,7 +4,7 @@ stages:
   - "deploy"
 
 build-backend:
-  image: node:14-alpine
+  image: ${DOCKER_CACHE}/node:14-alpine
   stage: "build"
   artifacts:
     untracked: false
@@ -19,7 +19,7 @@ build-backend:
     - esbuild ./dist/index.js --bundle --outfile=bundle.js --platform=node
 
 build-frontend:
-  image: node:14-alpine
+  image: ${DOCKER_CACHE}/node:14-alpine
   stage: "build"
   artifacts:
     untracked: false
@@ -43,13 +43,13 @@ build-backend-container:
     - echo "BASE_URL='https://eps-dev.net'" >> backend/.env
     - echo "FRONTEND_URL='https://s.eps-dev.net'" >> backend/.env
     - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"registry01.eps-dev.de\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"registry.cdev.nexus\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - >-
       /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
-      --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
-      --destination "registry01.eps-dev.de/gitlab/shortener/${CI_COMMIT_REF_SLUG}:latest"
+      --destination "registry.cdev.nexus/url-shortener/backend:${CI_COMMIT_REF_SLUG}"
+      --destination "registry.cdev.nexus/url-shortener/backend:latest"
 
 build-frontend-container:
   stage: "container-build"
@@ -60,18 +60,18 @@ build-frontend-container:
     - build-frontend
   script:
     - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"registry01.eps-dev.de\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"registry.cdev.nexus\":{\"auth\":\"$(printf "%s:%s" "${PRIVATE_REG_USER}" "${PRIVATE_REG_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - >-
       /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/frontend/Dockerfile"
-      --destination "registry01.eps-dev.de/gitlab/shortener/frontend-${CI_COMMIT_REF_SLUG}:${CI_COMMIT_SHA}"
-      --destination "registry01.eps-dev.de/gitlab/shortener/frontend-${CI_COMMIT_REF_SLUG}:latest"
+      --destination "registry.cdev.nexus/url-shortener/frontend:${CI_COMMIT_REF_SLUG}"
+      --destination "registry.cdev.nexus/url-shortener/frontend:latest"
 
 deploy-backend:
   stage: deploy
   image:
-    name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
+    name: 'registry.cdev.nexus/devops/deployment-containers/helmctl:latest'
     entrypoint: [""]
   needs:
     - build-backend-container
@@ -84,7 +84,7 @@ deploy-backend:
 deploy-frontend:
   stage: deploy
   image:
-    name: 'registry01.eps-dev.de/devops/deployment-containers/helmctl:latest'
+    name: 'registry.cdev.nexus/devops/deployment-containers/helmctl:latest'
     entrypoint: [""]
   needs:
     - build-frontend-container
