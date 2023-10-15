@@ -39,7 +39,7 @@ build-backend-container:
   needs:
     - build-backend
   script:
-    - echo "DATABASE_URL=\"${DATABASE_URL}\"" > backend/.env
+    - echo "DATABASE_URL=\"${MONGO_URI}\"" > backend/.env
     - echo "BASE_URL='https://eps-dev.net'" >> backend/.env
     - echo "FRONTEND_URL='https://s.eps-dev.net'" >> backend/.env
     - mkdir -p /kaniko/.docker
