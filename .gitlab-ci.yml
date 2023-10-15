@@ -71,7 +71,7 @@ build-frontend-container:
 deploy-backend:
   stage: deploy
   image:
-    name: 'registry.cdev.nexus/devops/deployment-containers/helmctl:latest'
+    name: 'registry.cdev.nexus/devops/kubernetes:latest'
     entrypoint: [""]
   needs:
     - build-backend-container
@@ -84,7 +84,7 @@ deploy-backend:
 deploy-frontend:
   stage: deploy
   image:
-    name: 'registry.cdev.nexus/devops/deployment-containers/helmctl:latest'
+    name: 'registry.cdev.nexus/devops/kubernetes:latest'
     entrypoint: [""]
   needs:
     - build-frontend-container
